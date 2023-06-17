@@ -1,7 +1,7 @@
 const express = require('express');
 
 const bodyParser = require('body-parser');
-
+const isAuth = require('./middleware/auth-middleware')
 const {graphqlHTTP} = require('express-graphql')
 /* 
 function where express expects a middleware function
@@ -18,6 +18,9 @@ const app = express();
 app.use(bodyParser.json());
 // express-graphql allows us to point at schemas and resolvers
 // graphql will allow us to define this schema
+
+app.use(isAuth);
+// will run on every req
 
 const events = eventIds => {
     return event.find({_id : {$in: eventIds}})

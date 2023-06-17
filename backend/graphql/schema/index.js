@@ -27,6 +27,12 @@ type User {
   createdEvents: [Event!]
 }
 
+type AuthData {
+  userId: ID!
+  token: String!
+  tokenExpiration: Int!
+}
+
 input EventInput {
   title: String!
   description: String!
@@ -42,6 +48,7 @@ input UserInput {
 type RootQuery {
     events: [Event!]!
     bookings: [Booking!]!
+    login(email: String!, password: String!): AuthData!
 }
 
 type RootMutation {
@@ -56,3 +63,13 @@ schema {
     mutation: RootMutation
 }
 `);
+// ALL NAMES FOR QUERYS AND MUTATIONS SHOULD MATCH IN RESOLVER NAMES
+
+// date when logged in should be a token, 
+// info about when token is about to expire 
+// info on user id
+
+
+// token is used for decoupled frontend and backend
+// token is then attached to subsequent requests 
+// and we can validate the requests in backend

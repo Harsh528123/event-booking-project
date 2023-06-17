@@ -1,8 +1,9 @@
 const Event = require('../../models/event');
 const User = require('../../models/user');
 const { dateToString } = require('../../helpers/date')
+
 /**
- * 
+ * returns all the data for each event given using transformEvent
  * @param {*} eventIds all event ids used to find all events and their data like date and creator. 
  * @returns 
  */
@@ -17,7 +18,11 @@ const events = async eventIds => {
     }
 };
 
-
+/**
+ * For an event with a specific id, it returns its' relevant metadata
+ * @param {*} eventId 
+ * @returns 
+ */
 const singleEvent = async eventId => {
     try {
         const event =  await Event.findById(eventId);
@@ -48,6 +53,11 @@ const user = async userId => {
   }
 };
 
+/**
+ * gets an event object and returns relevant data for it
+ * @param {*} event 
+ * @returns 
+ */
 const transformEvent = event => {
     return {
         ...event._doc,
