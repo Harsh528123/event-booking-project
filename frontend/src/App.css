@@ -1,0 +1,6 @@
+.appContainer {
+    display: grid;
+    grid-template-columns: [left-pane] 10% [main-pane] 80% [right-pane] 10% [end];
+    grid-template-rows: [nav] 10% [main-page] 70% [bottom-section] 20% [end];
+    height:100%;
+}

@@ -1,0 +1,32 @@
+.navContainer {
+    grid-area: nav / left-pane / main-page / end;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2%;
+    background-color: beige;
+    align-items: center;
+    position: sticky;
+}
+.options {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    list-style-type: none;
+    margin-right: 5%;
+
+}
+.options li {
+    margin-right: 15%;
+    text-decoration: none;
+}
+
+.options a {
+    text-decoration: none;
+    color:black;
+}
+
+.options a:hover {
+    color: rgb(43, 98, 150);
+    cursor: pointer;
+}

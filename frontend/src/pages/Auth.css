@@ -1,0 +1,41 @@
+.authenticationForm {
+    grid-area: main-page / main-pane / bottom-section / right-pane;
+    padding:5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #EADDCA;
+    height: min-content;
+}
+
+.formComponents label, .formComponents input {
+  width: 100%;
+  display: block;
+  margin-bottom: 1%;
+}
+
+.formComponents {
+    margin-top: 5%;
+    width: 50%;
+}
+
+.formActions {
+    margin-top: 5%;
+    width:50%;
+    display:flex;
+    justify-content: space-evenly;
+}
+
+.formActions button {
+    background-color: #50C878;
+    border-radius: 2rem;
+    -webkit-border-radius: 2rem;
+    -moz-border-radius: 2rem;
+    -ms-border-radius: 2rem;
+    -o-border-radius: 2rem;
+}
+
+.formActions button:hover {
+    background-color: #18b64c;
+    cursor: pointer;
+}

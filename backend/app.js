@@ -18,6 +18,16 @@ const app = express();
 app.use(bodyParser.json());
 // express-graphql allows us to point at schemas and resolvers
 // graphql will allow us to define this schema
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization');
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+
+})
 
 app.use(isAuth);
 // will run on every req
@@ -74,7 +84,7 @@ app.get('/', (req, res, next) => {
 })
 
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.xypry9q.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`).then(() => {
-    app.listen(3000);
+    app.listen(4000);
 }).catch(err => {
     console.log(err);
 })
