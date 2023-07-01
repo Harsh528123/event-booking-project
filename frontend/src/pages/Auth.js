@@ -1,16 +1,21 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import './Auth.css'
+import authContext from '../context/auth-context';
 
 const Auth = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLogin, setIsLogin] = useState(true);
-    console.log(email)
+    const {login} = useContext(authContext);
+
+
     const switchModeHandler = () => {
         setIsLogin(!isLogin);
     }
     const handleSubmit = async (e) => {
+
+        console.log(isLogin);
         e.preventDefault();
         if (email.trim().length === 0 || password.trim().length === 0) {
             return;
@@ -50,8 +55,11 @@ const Auth = () => {
         if (response.status !== 200 && response.status != 201){
             throw new Error('Failed!');
         }
-        const res = await response.json()
+        const res = await response.json();
         console.log(res);
+        isLogin ? login(res.data.login.token, res.data.login.userId, res.data.login.tokenExpiration) : login(res.data.createUser.token, res.data.createUser.userId, res.data.createUser.tokenExpiration)
+
+
         } catch (err) {
             console.log(err);
         }
@@ -72,7 +80,7 @@ const Auth = () => {
         </section>
 
         <section className='formActions'>
-            <button> Submit </button>
+            <button type='submit'> Submit </button>
             <button onClick={switchModeHandler} style={{marginLeft: "5%"}}> Switch to {isLogin ? 'Signup' : 'Login'} </button>
         </section>
 
