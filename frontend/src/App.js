@@ -6,6 +6,7 @@ import Bookings from './pages/Bookings';
 import Nav from './components/Nav';
 import AuthContext from './context/auth-context';
 import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 
 function App() {
     const {token} = useContext(AuthContext);
@@ -15,10 +16,13 @@ function App() {
         <div className='appContainer'>
           <Nav />
           <Routes>
-            <Route path="/" element={<Auth/>} />
-            <Route path="/auth" element={<Auth/>} />
-            <Route path="/events" element={<Events/>} />
-            <Route path="/bookings" element={<Bookings/>} />
+            {!token && <Route path="/" element={<Navigate replace to="/auth" />} />}
+            {!token && <Route path="/auth" element={<Auth/>} /> }
+            {token && <Route path="/auth" element={<Navigate replace to="/events" />} />}  
+            {token && <Route path="/events" element={<Events/>} /> }          
+            {!token && <Route path="/events" element={<Navigate replace to="/auth" />} /> }          
+            {token && <Route path="/bookings" element={<Bookings/>} />}
+            {token && <Route path="/bookings" element={<Navigate replace to="/auth" />} />}
           </Routes>
         </div>
       </BrowserRouter>

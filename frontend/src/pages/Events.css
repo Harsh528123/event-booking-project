@@ -1,0 +1,11 @@
+.events-control {
+    grid-area: main-page / main-pane / bottom-section / right-pane;
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.events-control > .formActionsButton {
+    margin: 0 auto;
+}

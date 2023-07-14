@@ -1,6 +1,7 @@
 import React, {useState, useContext} from 'react'
 import './Auth.css'
 import authContext from '../context/auth-context';
+import {useNavigate} from 'react-router-dom'
 
 const Auth = () => {
 
@@ -8,6 +9,7 @@ const Auth = () => {
     const [password, setPassword] = useState("");
     const [isLogin, setIsLogin] = useState(true);
     const {login} = useContext(authContext);
+    const navigate = useNavigate();
 
 
     const switchModeHandler = () => {
@@ -57,7 +59,10 @@ const Auth = () => {
         }
         const res = await response.json();
         console.log(res);
-        isLogin ? login(res.data.login.token, res.data.login.userId, res.data.login.tokenExpiration) : login(res.data.createUser.token, res.data.createUser.userId, res.data.createUser.tokenExpiration)
+        if (res.data.login) {
+            login(res.data.login.token, res.data.login.userId, res.data.login.tokenExpiration);
+            // navigate('/events');
+        } 
 
 
         } catch (err) {
@@ -80,8 +85,8 @@ const Auth = () => {
         </section>
 
         <section className='formActions'>
-            <button type='submit'> Submit </button>
-            <button onClick={switchModeHandler} style={{marginLeft: "5%"}}> Switch to {isLogin ? 'Signup' : 'Login'} </button>
+            <button className='formActionsButton' type='submit'> Submit </button>
+            <button className='formActionsButton' onClick={switchModeHandler} style={{marginLeft: "5%"}}> Switch to {isLogin ? 'Signup' : 'Login'} </button>
         </section>
 
       </form>

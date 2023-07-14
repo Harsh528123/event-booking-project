@@ -30,3 +30,17 @@
     color: rgb(43, 98, 150);
     cursor: pointer;
 }
+
+.button {
+    background-color: #50C878;
+    border-radius: 2rem;
+    -webkit-border-radius: 2rem;
+    -moz-border-radius: 2rem;
+    -ms-border-radius: 2rem;
+    -o-border-radius: 2rem;
+}
+
+.button:hover {
+    background-color: #18b64c;
+    cursor: pointer;
+}
