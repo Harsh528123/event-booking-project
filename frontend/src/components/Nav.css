@@ -1,5 +1,5 @@
 .navContainer {
-    grid-area: nav / left-pane / main-page / end;
+    grid-area: nav / left-pane /  row1 / end;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

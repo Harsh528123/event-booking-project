@@ -1,19 +1,20 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './Events.css'
 import Modal from '../components/Modal/Modal'
+import Backdrop from '../components/Backdrop/Backdrop'
 
 const Events = () => {
+  const [eventModalToggle,setEventModalToggle] = useState(false)
   return (
     <>
-            <Modal title="Add Event "
-                        canCancel
-                        canConfirm
-                        className='events-control'
-            >
-                <p> Modal Content</p>
-            </Modal>
+            {eventModalToggle && <Backdrop/>}
+            {eventModalToggle && 
+                <Modal setEventModalToggle={setEventModalToggle} eventModalToggle= {eventModalToggle} title="Add Event " className='events-control'>
+                    <p> Modal Content</p>
+                </Modal>}   
             <div className='events-control'>
-                <button className='formActionsButton'> Create Event </button>
+                <p>Share your own Events!</p>
+                <button className='formActionsButton' onClick={()=> {setEventModalToggle(!eventModalToggle)}}> Create Event </button>
             </div>
     </>
   )

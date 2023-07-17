@@ -1,7 +1,7 @@
 import React from 'react'
 import './Modal.css'
 
-const Modal = ({title, children, canCancel, canConfirm}) => {
+const Modal = ({title, children , eventModalToggle, setEventModalToggle}) => {
   return (
     <div className="modal">
         <header className="modal_header"> 
@@ -12,8 +12,8 @@ const Modal = ({title, children, canCancel, canConfirm}) => {
         </section>
 
         <section className="modal_actions">
-            {canCancel && <button> Cancel </button>}
-            {canConfirm && <button> Confirm </button>}
+            <button className='formActionsButton' onClick={() => {setEventModalToggle(false)}}> Cancel </button>
+            <button className='formActionsButton'> Confirm </button>
         </section>
     </div>
   )

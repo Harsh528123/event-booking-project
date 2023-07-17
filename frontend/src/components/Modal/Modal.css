@@ -1,10 +1,11 @@
 .modal {
-    grid-area: main-page / main-pane / bottom-section / right-pane;
-    height:50%;
+    position:fixed;
     width:50%;
+    margin:0 auto;
+    margin-top: 15%;
+    margin-left:25%;
     background: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-    position: fixed;
 }
 
 .modal_header {
@@ -19,5 +20,9 @@
 
 .modal_actions {
     display: flex;
-    justify-content: flex-end;
+    padding:2%;
 }
+
+/* .modal_actions > .formActionsButton {
+    margin-left:0%;
+} */
