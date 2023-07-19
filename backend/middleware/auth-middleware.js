@@ -35,6 +35,7 @@ module.exports = (req, res, next) => {
                 console.log("32")
                 req.isAuth = true
                 req.userId = decodedToken.userId;
+                console.log(req.userId)
                 return next();
             }
         }

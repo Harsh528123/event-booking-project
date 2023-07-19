@@ -51,19 +51,18 @@ const Auth = () => {
                 // will make sure it fails if we do it incorrectly
                 'Content-Type': 'application/json' // backend tries to parse as incoming json
 
+                }
+            })
+
+            if (response.status !== 200 && response.status != 201){
+                throw new Error('Failed!');
             }
-        })
-
-        if (response.status !== 200 && response.status != 201){
-            throw new Error('Failed!');
-        }
-        const res = await response.json();
-        console.log(res);
-        if (res.data.login) {
-            login(res.data.login.token, res.data.login.userId, res.data.login.tokenExpiration);
-            // navigate('/events');
-        } 
-
+            const res = await response.json();
+            console.log(res);
+            if (res.data.login) {
+                login(res.data.login.token, res.data.login.userId, res.data.login.tokenExpiration);
+                // navigate('/events');
+            } 
 
         } catch (err) {
             console.log(err);

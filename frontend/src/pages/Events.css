@@ -10,3 +10,8 @@
 .formActionsButton {
     margin: 0 auto;
 }
+
+.events__list {
+
+    grid-area: row2 / main-pane / bottom-section / right-pane;
+  }
