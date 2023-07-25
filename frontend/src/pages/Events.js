@@ -13,7 +13,7 @@ const Events = () => {
   const descriptionRef = useRef();
   const {token} = useContext(AuthContext);
   const [events, setEvents] = useState([]);
-  console.log(events);
+  const [selectedViewDetails, setSelectedViewDetails] = useState(false);
 
   const fetchEvents = async () => {
     const requestBody = {
@@ -81,6 +81,7 @@ const Events = () => {
           query: `
               mutation {
                   createEvent(eventInput: {title: "${event['title']}", description: "${event['description']}", price: ${event['price']}, date: "${event['date']}"}) {
+                      _id
                       title
                       description
                       price
@@ -108,7 +109,7 @@ const Events = () => {
         }
         const res = await response.json();
         console.log(res);
-        fetchEvents();
+        setEvents((oldState) => [...oldState, res.data.createEvent])
       } catch (err) {
         console.log(err);
       }
@@ -117,33 +118,35 @@ const Events = () => {
     <>
             {eventModalToggle && <Backdrop/>}
             {eventModalToggle && 
-                <Modal setEventModalToggle={setEventModalToggle} eventModalToggle= {eventModalToggle} title="Add Event " className='events-control' handleSubmit={handleSubmit}>
-                    <p> Modal Content</p>
-                    <form>
-                      <div className='formComponents'> 
-                          <label htmlFor="title"> Title </label>
-                          <input type="text" id="title" ref={titleRef}></input>
-                      </div>
-                      <div className='formComponents'> 
-                          <label htmlFor="price"> Price </label>
-                          <input type="number" id="price" ref={priceRef}></input>
-                      </div>
-                      <div className='formComponents'> 
-                          <label htmlFor="Date"> Date </label>
-                          <input type="datetime-local" id="date" ref={dateRef}></input>
-                      </div>
-                      <div className='formComponents'> 
-                          <label htmlFor="Description"> Description </label>
-                          <textarea type="text" id="description" rows="4" ref={descriptionRef}></textarea>
-                      </div>
-                    </form>
-                </Modal>}   
+                <Modal setEventModalToggle={setEventModalToggle} 
+                eventModalToggle= {eventModalToggle} 
+                title="Add Event " 
+                className='events-control' 
+                handleSubmit={handleSubmit}
+                titleRef={titleRef}
+                priceRef={priceRef}
+                dateRef={dateRef}
+                descriptionRef={descriptionRef}
+                setSelectedViewDetails={setSelectedViewDetails}
+                />}  
+
+            {selectedViewDetails && <Modal setEventModalToggle={setEventModalToggle} 
+                eventModalToggle= {eventModalToggle} 
+                title="Add Event " 
+                className='events-control' 
+                handleSubmit={handleSubmit}
+                titleRef={titleRef}
+                priceRef={priceRef}
+                dateRef={dateRef}
+                descriptionRef={descriptionRef}
+                setSelectedViewDetails={setSelectedViewDetails}
+                />} 
             <div className='events-control'>
                 <p>Share your own Events!</p>
                 <button className='formActionsButton' onClick={handleToggle}> Create Event </button>
             </div>
             <ul className="events__list">
-            {events.map((value) => <Event key={value['_id']} event={value}/>)}
+            {events.map((value) => <Event key={value['_id']} event={value} setSelectedViewDetails={setSelectedViewDetails}/>)}
             </ul>
     </>
   )
