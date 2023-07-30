@@ -2,7 +2,7 @@ import React, {useContext} from 'react'
 import './Event.css'
 import AuthContext from '../../context/auth-context'
 
-const Event = ({event, setSelectedViewDetails}) => {
+const Event = ({event, handleFunction}) => {
     const {userId} = useContext(AuthContext);
     console.log(userId);
     return (
@@ -13,7 +13,7 @@ const Event = ({event, setSelectedViewDetails}) => {
         </section>
 
         <section>
-            <button className='formActionsButton' onClick={()=> setSelectedViewDetails(true)}> View Details </button>
+            <button className='formActionsButton' onClick={()=> handleFunction(event)}> View Details </button>
             {userId === event['creator']['_id']? <p> You are the user </p> : null}
         </section>
     </div>
