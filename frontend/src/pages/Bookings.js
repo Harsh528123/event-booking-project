@@ -1,10 +1,11 @@
 import React,{useEffect, useState, useContext} from 'react'
 import AuthContext from '../context/auth-context';
 import Booking from '../components/Booking/Booking';
-
+import './Bookings.css'
 const Bookings = () => {
     const [bookings, setBookings] = useState([]);
     const {token} = useContext(AuthContext);
+    console.log(bookings);
 
     useEffect(()=> {
       fetchBookings()
@@ -48,7 +49,7 @@ const Bookings = () => {
     }
     }
     return (
-      <div className='events__list'> {bookings.map((booking)=> <Booking booking={booking} />)}</div>
+      <div className='booking'> {bookings.map((booking)=> <Booking setBookings={setBookings} booking={booking} />)}</div>
     )
 }
 

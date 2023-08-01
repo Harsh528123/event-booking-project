@@ -1,0 +1,3 @@
+.booking {
+    grid-area: row1 / left-pane / row2 / end;
+}
