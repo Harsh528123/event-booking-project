@@ -2,9 +2,8 @@ const Event = require('../../models/event');
 const User = require('../../models/user');
 const { dateToString } = require('../../helpers/date')
 const DataLoader = require('dataloader');
-const user = require('../../models/user');
 
-
+// data loader makes it more efficient to search the database by reducing the hits to db
 const eventLoader  = new DataLoader((eventIds) => {
     return events(eventIds)
 });
@@ -55,7 +54,7 @@ const user = async userId => {
     return {
       ...user._doc,
       _id: user.id,
-      createdEvents: eventLoader.load.bind(this, user._doc.createdEvents)
+      createdEvents: () => eventLoader.loadMany(user._doc.createdEvents)
       // calls the events function with the createdEvents as a parameter and gets their ids. date and creator
     };
   } catch (err) {

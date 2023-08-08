@@ -7,12 +7,15 @@ const Booking = ({booking, setBookings}) => {
     const handleCancel = async() => {
       const requestBody = {
         query: `
-            mutation {
-                cancelBooking( bookingId: "${booking['_id']}") {
+            mutation CancelBooking($id: ID!) {
+                cancelBooking( bookingId: $id) {
                     _id
                     title
                 }
-            }`
+            }`,
+            variables: {
+              id: booking['_id']
+            }
       }; 
       try {
         const response = await fetch('http://localhost:4000/graphql', {
