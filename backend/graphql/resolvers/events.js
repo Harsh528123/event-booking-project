@@ -25,7 +25,6 @@ module.exports = {
      */
     createEvent: async (args,req) => {
         try {
-            console.log("made it here")
             if (!req.isAuth) {
                 throw new Error('Unauthenticated');
             }

@@ -3,7 +3,7 @@ const User = require('../../models/user');
 const { dateToString } = require('../../helpers/date')
 const DataLoader = require('dataloader');
 
-// data loader makes it more efficient to search the database by reducing the hits to db
+// data loader makes it more efficient to search the database by reducing the hits to db. Gets all events
 const eventLoader  = new DataLoader((eventIds) => {
     return events(eventIds)
 });
@@ -18,7 +18,7 @@ const userLoader = new DataLoader((userIds) => {
  */
 const events = async eventIds => {
     try {
-        const events = await Event.find({ _id: { $in: eventIds } });
+        const events = await Event.find({ _id: { $in: eventIds } }); // fetching from database based on eventIds
         return events.map(event => {
             return transformEvent(event);
         });
@@ -49,7 +49,6 @@ const singleEvent = async eventId => {
  */
 const user = async userId => {
   try {
-
     const user = await userLoader.load(userId.toString());
     return {
       ...user._doc,
@@ -89,7 +88,6 @@ const transformBooking = booking => {
         updatedAt: dateToString(booking._doc.updatedAt)
     }
 }
-
 
 exports.transformEvent = transformEvent;
 exports.transformBooking = transformBooking;

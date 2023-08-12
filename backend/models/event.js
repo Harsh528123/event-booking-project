@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+/**
+ * Takes in all necessary basic properties and the creator id as foreign id
+ */
 const eventSchema = new Schema({
     title: {
         type: String,

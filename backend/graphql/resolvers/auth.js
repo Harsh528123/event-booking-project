@@ -35,6 +35,7 @@ module.exports = {
         if (!user) {
             throw new Error('User does not exist');
         }
+        console.log("logged in")
         const isEqual = await bcrypt.compare(password, user.password);
         if (!isEqual) {
             throw new Error("Password is incorrect!")

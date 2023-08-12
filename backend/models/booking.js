@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+/**
+ * Takes an event id as a foreign key and 
+ * takes a user id as a foreign key
+ */
 const bookingSchema = new Schema({
     event : {
         type: Schema.Types.ObjectId,

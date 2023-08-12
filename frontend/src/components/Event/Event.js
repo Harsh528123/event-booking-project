@@ -2,6 +2,12 @@ import React, {useContext} from 'react'
 import './Event.css'
 import AuthContext from '../../context/auth-context'
 
+/**
+ * 
+ * @param {*} event
+ * @param {*} handleFunction
+ * @returns 
+ */
 const Event = ({event, handleFunction}) => {
     const {userId} = useContext(AuthContext);
     console.log(userId);

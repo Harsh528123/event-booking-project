@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+/**
+ * createdEvents is an array of event ids
+ */
 const userSchema = new Schema({
     email: {
         type: String,
