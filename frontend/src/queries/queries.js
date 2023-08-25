@@ -1,7 +1,7 @@
 import {gql} from '@apollo/client'
 
 const getAllEvents = gql`
-    query getEvents {
+    query GetEvents {
         events {
             _id
             title
@@ -17,7 +17,7 @@ const getAllEvents = gql`
 `
 
 const bookEvent = gql`
-    mutation bookEvent($eventId: ID!) {
+    mutation BookEvent($eventId: ID!) {
         bookEvent(eventId: $eventId) {
             _id
             createdAt
@@ -27,8 +27,8 @@ const bookEvent = gql`
 `
 
 const createEvent = gql`
-    mutation ($eInput: eventInput!) {
-        createEvent(eventInput: $eInput) {
+    mutation CreateEvent($eventInput: EventInput!) {
+        createEvent(eventInput: $eventInput) {
             _id
             title
             description
@@ -43,7 +43,7 @@ const createEvent = gql`
 ` 
 
 const login = gql`
-    query login($email: String!, $password: String!) {
+    query Login($email: String!, $password: String!) {
         login(email: $email, password: $password) {
             userId
             token
@@ -53,17 +53,17 @@ const login = gql`
 `
 
 const createUser = gql`
-    mutation createUser($uInput: userInput!) {
-        createUser(userInput: $uInput): {
+    mutation CreateUser($uInput: UserInput!) {
+        createUser(userInput: $uInput) {
             _id
             email
         }
     }
-`
+`;
 
 const bookings = gql`
-    query bookings {
-        bookings: {
+    query Bookings {
+        bookings {
             _id
             createdAt
             event {
@@ -73,6 +73,16 @@ const bookings = gql`
             }
         }
     }
+`;
+
+
+const cancelBooking = gql`
+    mutation cancelBooking($id: ID!) {
+        cancelBooking(bookingId: $id) {
+            _id
+            title
+        }
+    }
 `
 
-export {getAllEvents, bookEvent, createEvent, login, createUser, bookings}
+export {getAllEvents, bookEvent, createEvent, login, createUser, bookings, cancelBooking}

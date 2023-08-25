@@ -1,10 +1,16 @@
 import React, {useContext} from 'react'
 import AuthContext from '../../context/auth-context';
+import { bookEvent } from '../../queries/queries';
+import { useMutation } from '@apollo/client';
 
 
 const EventViewDetails = ({selectedEvent,setSelectedViewDetails, setEvents, setSelectedEvent}) => {
 
-    const {token} = useContext(AuthContext);
+
+    const {clientWithHeader} = useContext(AuthContext);
+    const [bookingEvent, { loading, error, eventData }] = useMutation(bookEvent, {
+        client: clientWithHeader
+    });
     const handleCancel = () => {
         setSelectedViewDetails(false);
     }
@@ -13,36 +19,9 @@ const EventViewDetails = ({selectedEvent,setSelectedViewDetails, setEvents, setS
         e.preventDefault();
         setSelectedEvent(null);
         setSelectedViewDetails(false);
+
+        bookingEvent({ variables: { eventId: `${selectedEvent['_id']}` }})
   
-        const requestBody = {
-            query: `
-                mutation {
-                    bookEvent(eventId: "${selectedEvent['_id']}") {
-                        _id
-                        createdAt
-                        updatedAt
-                    }
-                }`
-        }; 
-        try {
-          const response = await fetch('http://localhost:4000/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                // will make sure it fails if we do it incorrectly
-                'Content-Type': 'application/json', // backend tries to parse as incoming json
-                Authorization: 'Bearer ' + token
-                }
-          })
-  
-          if (response.status !== 200 && response.status !== 201){
-              throw new Error('Failed!');
-          }
-          const res = await response.json();
-          console.log(res);
-        } catch (err) {
-          console.log(err);
-        }
     }
   
 

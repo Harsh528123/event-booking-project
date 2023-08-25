@@ -10,7 +10,6 @@ import AuthContext from '../../context/auth-context'
  */
 const Event = ({event, handleFunction}) => {
     const {userId} = useContext(AuthContext);
-    console.log(userId);
     return (
     <div className='events__list-item'>
         <section>

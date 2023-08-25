@@ -1,45 +1,25 @@
 import React, {useContext} from 'react'
 import AuthContext from '../../context/auth-context';
+import { cancelBooking } from '../../queries/queries';
+import { useMutation } from '@apollo/client';
 
 const Booking = ({booking, setBookings}) => {
-  
-    const {token} = useContext(AuthContext);
-    const handleCancel = async() => {
-      const requestBody = {
-        query: `
-            mutation CancelBooking($id: ID!) {
-                cancelBooking( bookingId: $id) {
-                    _id
-                    title
-                }
-            }`,
-            variables: {
-              id: booking['_id']
-            }
-      }; 
-      try {
-        const response = await fetch('http://localhost:4000/graphql', {
-          method: 'POST',
-          body: JSON.stringify(requestBody),
-          headers: {
-              // will make sure it fails if we do it incorrectly
-              'Content-Type': 'application/json', // backend tries to parse as incoming json
-              Authorization: 'Bearer ' + token
-          }
-        })
-        setBookings(prevState => {
-          console.log(prevState)
+    console.log(setBookings)
+    const {clientWithHeader} = useContext(AuthContext);
+    const [cancelBookingFunc, {loading, error, bookingData}]= useMutation(cancelBooking, {onCompleted: (data) => {
+      setBookings(prevState => {
           const updatedBookings = prevState.filter(currentbooking => {
             return booking['_id'] !== currentbooking['_id']
           });
           return [...updatedBookings];
-        })
-        console.log(response);
-      } catch (err) {
-        console.log(err);
-      }
+      })}, 
+      client: clientWithHeader,          
+    });
+
+    const handleCancel = (e) => {
+        cancelBookingFunc({ variables: {id: booking['_id']}})
     }
-      return (
+    return (
           <div className='events__list-item'> 
               <section> 
                 <p>{booking['createdAt']}</p>

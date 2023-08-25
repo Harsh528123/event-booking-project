@@ -34,7 +34,7 @@ const events = async eventIds => {
  */
 const singleEvent = async eventId => {
     try {
-        const event =  await eventLoader.load(eventId);
+        const event =  await eventLoader.load(eventId.toString());
         return event;
     } catch (err) {
         throw err;
@@ -78,7 +78,8 @@ const transformEvent = event => {
 }
 
 
-const transformBooking = booking => {
+const transformBooking = async booking => {
+
     return { 
         ...booking._doc,
         _id: booking.id, 

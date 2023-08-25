@@ -7,20 +7,15 @@ import Nav from './components/Nav';
 import AuthContext from './context/auth-context';
 import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
+import { defaultClient } from './components/ApolloClients/HeaderlessApolloClient';
 
 
-const client = new ApolloClient({
-    // uri is the endpoint we make queries to (localhost:4000)
 
-    uri: 'http://localhost:4000/graphql',
-    cache: new InMemoryCache()
-})
 function App() {
     const {token} = useContext(AuthContext);
-    console.log(token);
     return (
-      <ApolloProvider client={client}>
+      <ApolloProvider client={defaultClient}>
           <BrowserRouter>
             <div className='appContainer'>
               <Nav />

@@ -2,77 +2,44 @@ import React, {useState, useContext} from 'react'
 import './Auth.css'
 import authContext from '../context/auth-context';
 import {useNavigate} from 'react-router-dom'
+import { login, createUser } from '../queries/queries';
+import { useMutation, useLazyQuery } from '@apollo/client';
+import { clientWithHeader } from '../components/ApolloClients/HeaderApolloClient';
 
 const Auth = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLogin, setIsLogin] = useState(true);
-    const {login} = useContext(authContext);
+    const {loginProcess, setClientWithHeader} = useContext(authContext);
     const navigate = useNavigate();
-
+    const [loadLogin, { loading, error, loginData }] = useLazyQuery(login, {onCompleted: (data) => {
+        loginProcess(data.login.token, data.login.userId, data.login.tokenExpiration);
+        setClientWithHeader(clientWithHeader(data.login.token))
+    }});
+    const [createUserFunction, { loadingUser, errorUser, createdUserData }] = useMutation(createUser);
 
     const switchModeHandler = () => {
         setIsLogin(!isLogin);
     }
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
 
-        console.log(isLogin);
         e.preventDefault();
-        if (email.trim().length === 0 || password.trim().length === 0) {
-            return;
-        }
-        let requestBody = {
-            query: `
-                query {
-                    login(email: "${email}", password: "${password}") {
-                        userId
-                        token
-                        tokenExpiration
-                    }
-                }`
-        }
-        if (!isLogin){
-            requestBody = {
-                query: `
-                    mutation {
-                        createUser(userInput: {email: "${email}", password: "${password}"}) {
-                            _id
-                            email
-                        }
-                    }`
-            }; 
-        }
-        try {
-            const response = await fetch('http://localhost:4000/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                // will make sure it fails if we do it incorrectly
-                'Content-Type': 'application/json' // backend tries to parse as incoming json
+        if (email.trim().length === 0 || password.trim().length === 0) { return }
 
-                }
-            })
-
-            if (response.status !== 200 && response.status != 201){
-                throw new Error('Failed!');
+        if (!isLogin){ 
+            createUserFunction({ variables: { uInput: { email: email, password: password}} })
+        } else {
+            try {
+                loadLogin( { variables: { email: email, password: password } })
+            } catch (err) {
+                console.log(err)
             }
-            const res = await response.json();
-            console.log(res);
-            if (res.data.login) {
-                login(res.data.login.token, res.data.login.userId, res.data.login.tokenExpiration);
-                // navigate('/events');
-            } 
-
-        } catch (err) {
-            console.log(err);
         }
-        
         // ...
     }
     return (
       <form className='authenticationForm' onSubmit={handleSubmit}>
-
         <section className='formComponents'>
             <label htmlFor='Email'> Email </label>
             <input type='email' id='email' onChange={(e => setEmail(e.target.value))} />

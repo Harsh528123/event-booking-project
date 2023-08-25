@@ -8,7 +8,9 @@ export const AuthProvider = ({children}) => {
     const [token, setToken] = useState("");
     const [tokenExpiration, setTokenExpiration] = useState("");
     const [userId, setUserId] = useState("");
-    const login = (token, id, tokenExpiration) => {
+    const [clientWithHeader, setClientWithHeader] = useState("");
+    console.log(clientWithHeader);
+    const loginProcess = (token, id, tokenExpiration) => {
         setToken(token);
         setUserId(id);
         setTokenExpiration(tokenExpiration)
@@ -21,12 +23,7 @@ export const AuthProvider = ({children}) => {
 
     return (
         <AuthContext.Provider
-            value = {{
-                token, setToken, 
-                userId, setUserId, 
-                login, logout
-            }}
-        >
+            value = {{token, setToken, userId, setUserId, loginProcess, logout, clientWithHeader, setClientWithHeader }}>
 
             {children}
         </AuthContext.Provider>
