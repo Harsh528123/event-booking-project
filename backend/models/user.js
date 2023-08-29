@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
 
 /**
@@ -28,5 +27,4 @@ Two ways users are connected to events:
 user creates an event
 user books an event
 */
-
-module.exports = mongoose.model('User', userSchema)
+export const userModel = mongoose.model('User', userSchema)

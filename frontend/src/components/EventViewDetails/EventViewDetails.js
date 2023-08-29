@@ -11,15 +11,19 @@ const EventViewDetails = ({selectedEvent,setSelectedViewDetails, setEvents, setS
     const [bookingEvent, { loading, error, eventData }] = useMutation(bookEvent, {
         client: clientWithHeader
     });
+
     const handleCancel = () => {
         setSelectedViewDetails(false);
     }
 
+    /**
+     * Get rid of the view modal and book event
+     * @param {*} e 
+     */
     const handleSubmit = async(e) => {
         e.preventDefault();
         setSelectedEvent(null);
         setSelectedViewDetails(false);
-
         bookingEvent({ variables: { eventId: `${selectedEvent['_id']}` }})
   
     }

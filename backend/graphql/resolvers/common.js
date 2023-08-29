@@ -1,15 +1,14 @@
-const Event = require('../../models/event');
-const User = require('../../models/user');
-const { dateToString } = require('../../helpers/date')
-const DataLoader = require('dataloader');
-
+import { eventModel } from '../../models/event.js';
+import { userModel } from '../../models/user.js';
+import { dateToString } from '../../helpers/date.js';
+import DataLoader from 'dataloader';
 // data loader makes it more efficient to search the database by reducing the hits to db. Gets all events
 const eventLoader  = new DataLoader((eventIds) => {
     return events(eventIds)
 });
 
 const userLoader = new DataLoader((userIds) => {
-    return User.find({_id: {$in: userIds}});
+    return userModel.find({_id: {$in: userIds}});
 })
 /**
  * returns all the data for each event given using transformEvent
@@ -18,7 +17,7 @@ const userLoader = new DataLoader((userIds) => {
  */
 const events = async eventIds => {
     try {
-        const events = await Event.find({ _id: { $in: eventIds } }); // fetching from database based on eventIds
+        const events = await eventModel.find({ _id: { $in: eventIds } }); // fetching from database based on eventIds
         return events.map(event => {
             return transformEvent(event);
         });
@@ -66,7 +65,7 @@ const user = async userId => {
  * @param {*} event 
  * @returns 
  */
-const transformEvent = event => {
+export const transformEvent = event => {
     return {
         ...event._doc,
         // ._doc gives all necessary metadata;
@@ -78,7 +77,7 @@ const transformEvent = event => {
 }
 
 
-const transformBooking = async booking => {
+export const transformBooking = async booking => {
 
     return { 
         ...booking._doc,
@@ -90,8 +89,6 @@ const transformBooking = async booking => {
     }
 }
 
-exports.transformEvent = transformEvent;
-exports.transformBooking = transformBooking;
 // exports.user = user;
 // exports.events = events;
 // exports.singleEvent = singleEvent;

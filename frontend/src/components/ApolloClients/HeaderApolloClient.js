@@ -1,5 +1,11 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
+
+/**
+ * This is the client given to queries and mutations that need authorization
+ * @param {*} token 
+ * @returns 
+ */
 export const clientWithHeader = (token) => {
     console.log(token)
     return new ApolloClient({

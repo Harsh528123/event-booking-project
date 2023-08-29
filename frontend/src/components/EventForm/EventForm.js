@@ -1,73 +1,53 @@
-import React, {useRef, useContext}  from 'react'
-import AuthContext from '../../context/auth-context';
+import React, {useRef}  from 'react'
+import { createEvent } from '../../queries/queries';
+import { clientWithHeader } from '../ApolloClients/HeaderApolloClient';
+import { useMutation } from '@apollo/client';
 
 const EventForm = ({setEventModalToggle, eventModalToggle, setEvents}) => {
     const titleRef = useRef("");
     const priceRef = useRef(0);
     const dateRef = useRef();
     const descriptionRef = useRef();
-    const {token} = useContext(AuthContext);
-    
+    const [createEventFn, { loadingUser, error, createdUserData }] = useMutation(createEvent, {
+        errorPolicy: "all",
+        onCompleted: (data) => {setEvents((oldState) => [...oldState, data.createEvent])},
+        client: clientWithHeader, 
+    });
+
+    /**
+     * When creating an event, add it to events state 
+     * @param {*} e 
+     * @returns 
+     */
     const handleSubmit = async(e) => {
-      e.preventDefault();
-      setEventModalToggle(!eventModalToggle);
-      const event = {
-        title: titleRef.current.value,
-        price: +priceRef.current.value,
-        date: dateRef.current.value,
-        description: descriptionRef.current.value
-      }
-      console.log(event);
-      if (event['title'].trim().length === 0 || event['price'] <= 0 || event['date'].trim().length === 0 || event['description'].trim().length === 0) {
-        return;
-      }
-
-      const requestBody = {
-          query: `
-              mutation {
-                  createEvent(eventInput: {title: "${event['title']}", description: "${event['description']}", price: ${event['price']}, date: "${event['date']}"}) {
-                      _id
-                      title
-                      description
-                      price
-                      date
-                      creator {
-                        _id
-                        email
-                      }
-                  }
-              }`
-      }; 
-      try {
-        const response = await fetch('http://localhost:4000/graphql', {
-          method: 'POST',
-          body: JSON.stringify(requestBody),
-          headers: {
-              // will make sure it fails if we do it incorrectly
-              'Content-Type': 'application/json', // backend tries to parse as incoming json
-              Authorization: 'Bearer ' + token
-              }
-        })
-
-        if (response.status !== 200 && response.status !== 201){
-            throw new Error('Failed!');
+        e.preventDefault();
+        setEventModalToggle(!eventModalToggle);
+        
+        const event = {
+            title: titleRef.current.value,
+            price: +priceRef.current.value,
+            date: dateRef.current.value,
+            description: descriptionRef.current.value
         }
-        const res = await response.json();
-        console.log(res);
-        setEvents((oldState) => [...oldState, res.data.createEvent])
-      } catch (err) {
-        console.log(err);
-      }
+        console.log(event)
+        if (event['title'].trim().length === 0 || event['price'] <= 0 || event['date'].trim().length === 0 || event['description'].trim().length === 0) {
+            return;
+        }
+        createEventFn({variables: {eventInput: event}})
     } 
 
+    /**
+     * Close event toggle
+     * @param {*} e 
+     */
     const handleCancel = (e) => {
       e.preventDefault();
-      console.log("here")
       setEventModalToggle(false);
     }
 
     return (
-      <form>
+      <>
+        <form>
               <div className='formComponents'> 
                   <label htmlFor="title"> Title </label>
                   <input type="text" id="title" ref={titleRef}></input>
@@ -88,7 +68,10 @@ const EventForm = ({setEventModalToggle, eventModalToggle, setEvents}) => {
                 <button className='formActionsButton' onClick={handleCancel}> Cancel </button>
                 <button className='formActionsButton' onClick={handleSubmit}> Confirm </button>
               </section>
-      </form>
+        </form>
+        {error && error.graphQLErrors.map(({ message }, i) => (<span key={i}>{message}</span>))}
+
+      </>
     )
 }
 

@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
@@ -20,4 +19,4 @@ const bookingSchema = new Schema({
 // mongoose will automatically have a created@ and updated@
 
 
-module.exports = mongoose.model('Booking', bookingSchema);
+export const bookingModel = mongoose.model('Booking', bookingSchema);
