@@ -5,6 +5,7 @@ import { typeDefs } from './graphql/schema/officialSchema.js';
 import { resolvers } from './graphql/resolvers/index.js';
 import jwt from 'jsonwebtoken'
 import { handleAuth } from './middleware/auth-middleware.js';
+import { formattingError } from './graphql/errors/formattingError.js';
 /* 
 function where express expects a middleware function
 takes incoming req and funnel through graphql parser
@@ -12,7 +13,8 @@ and automatically forward them to right resolvers
 */
 const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    formatError: formattingError
 })
 
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.xypry9q.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`)

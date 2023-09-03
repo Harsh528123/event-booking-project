@@ -2,8 +2,8 @@
 import { userModel } from '../../models/user.js';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-
-
+import { userNotFound } from '../errors/authenticationError.js';
+import { incorrectPassword } from '../errors/authenticationError.js';
 
 export const userMutations = { 
     
@@ -21,8 +21,8 @@ export const userMutations = {
                 const hashedPassword = await bcrypt.hash(args.userInput.password, 12);
         
                 const user = new userModel({
-                email: args.userInput.email,
-                password: hashedPassword
+                    email: args.userInput.email,
+                    password: hashedPassword
                 });
         
                 const result = await user.save();
@@ -37,12 +37,12 @@ export const userQueries = {
         login: async (parent, args, contextValue, info) => {
             const user = await userModel.findOne({email: args.email});
             if (!user) {
-                throw new Error('User does not exist');
+                throw userNotFound;
             }
             console.log("logged in")
             const isEqual = await bcrypt.compare(args.password, user.password);
             if (!isEqual) {
-                throw new Error("Password is incorrect!")
+                throw incorrectPassword;
             } else {
                 const token = jwt.sign({userId: user.id, email: user.email}, 'somesupersecretkey', {
                     expiresIn: '1h'

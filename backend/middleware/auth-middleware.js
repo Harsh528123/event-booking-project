@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 export const handleAuth = (req) => {
     const authHeader = req.get('Authorization')
     // Authorization header in the requests is needed for certain accesses like booking
-
+    console.log("here")
     if (!authHeader) {
         //  if no auth field, go to the next middleware function
         return {isAuth : false};

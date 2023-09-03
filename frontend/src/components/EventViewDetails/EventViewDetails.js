@@ -9,9 +9,13 @@ const EventViewDetails = ({selectedEvent,setSelectedViewDetails, setEvents, setS
 
     const {clientWithHeader} = useContext(AuthContext);
     const [bookingEvent, { loading, error, eventData }] = useMutation(bookEvent, {
-        client: clientWithHeader
+        client: clientWithHeader,
+        onCompleted: (data) => {alert("Booking successfully completed!")}
     });
 
+    /**
+     * Cancel the event viewing modal
+     */
     const handleCancel = () => {
         setSelectedViewDetails(false);
     }

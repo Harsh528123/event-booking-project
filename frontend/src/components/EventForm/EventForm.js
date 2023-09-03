@@ -1,17 +1,18 @@
-import React, {useRef}  from 'react'
+import React, {useRef, useContext}  from 'react'
 import { createEvent } from '../../queries/queries';
-import { clientWithHeader } from '../ApolloClients/HeaderApolloClient';
 import { useMutation } from '@apollo/client';
+import AuthContext from '../../context/auth-context';
 
 const EventForm = ({setEventModalToggle, eventModalToggle, setEvents}) => {
     const titleRef = useRef("");
     const priceRef = useRef(0);
     const dateRef = useRef();
     const descriptionRef = useRef();
+    const {clientWithHeader} = useContext(AuthContext);
     const [createEventFn, { loadingUser, error, createdUserData }] = useMutation(createEvent, {
         errorPolicy: "all",
         onCompleted: (data) => {setEvents((oldState) => [...oldState, data.createEvent])},
-        client: clientWithHeader, 
+        client: clientWithHeader,
     });
 
     /**
@@ -33,7 +34,11 @@ const EventForm = ({setEventModalToggle, eventModalToggle, setEvents}) => {
         if (event['title'].trim().length === 0 || event['price'] <= 0 || event['date'].trim().length === 0 || event['description'].trim().length === 0) {
             return;
         }
-        createEventFn({variables: {eventInput: event}})
+        try {
+            createEventFn({variables: {eventInput: {title: event.title, description: event.description, price: event.price, date: event.date}}})
+        } catch (err){
+            console.log(err)
+        }
     } 
 
     /**

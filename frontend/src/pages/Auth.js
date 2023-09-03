@@ -32,7 +32,10 @@ const Auth = () => {
     const handleSubmit = (e) => {
 
         e.preventDefault();
-        if (email.trim().length === 0 || password.trim().length === 0) { return }
+        if (email.trim().length === 0 || password.trim().length === 0) {
+            alert('Please input email and password!')
+            return;
+         }
 
         if (!isLogin){ 
             // for signup, create user through a mutation
@@ -63,7 +66,6 @@ const Auth = () => {
                 <button className='formActionsButton' onClick={switchModeHandler} style={{marginLeft: "5%"}}> Switch to {isLogin ? 'Signup' : 'Login'} </button>
             </section>
 
-            {error && error.graphQLErrors.map(({ message }, i) => (<span key={i}>{message}</span>))}
 
         </form>
     )

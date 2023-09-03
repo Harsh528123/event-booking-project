@@ -2,6 +2,7 @@ import { eventModel } from '../../models/event.js';
 import { userModel } from '../../models/user.js';
 import { dateToString } from '../../helpers/date.js';
 import DataLoader from 'dataloader';
+
 // data loader makes it more efficient to search the database by reducing the hits to db. Gets all events
 const eventLoader  = new DataLoader((eventIds) => {
     return events(eventIds)

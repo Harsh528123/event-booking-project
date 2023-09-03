@@ -1,6 +1,7 @@
 import { eventModel } from '../../models/event.js';
 import { transformEvent } from './common.js';
 import { userModel } from '../../models/user.js';
+import {authenticationError} from '../errors/authenticationError.js'
 
 export const eventQueries = {
         /**
@@ -27,7 +28,7 @@ export const eventMutations=  {
         createEvent: async (parent, args, contextValue, info) => {
             try {
                 if (!contextValue.isAuth) {
-                    throw new Error('Unauthenticated');
+                    throw authenticationError;
                 }
                 const event = new eventModel({
                     title: args.eventInput.title,

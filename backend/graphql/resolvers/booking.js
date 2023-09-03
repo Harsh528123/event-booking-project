@@ -2,20 +2,16 @@
 import { bookingModel } from '../../models/booking.js';
 import { transformEvent, transformBooking } from './common.js';
 import { eventModel } from '../../models/event.js';
-
+import {authenticationError} from '../errors/authenticationError.js'
 
 export const bookingQueries = {
         bookings: async (parent, args, contextValue, info) => {
-            console.log("made it here")
             if (!contextValue.isAuth) {
-                throw new Error('Unauthenticated!');
+                throw authenticationError
             }
             try {
                 const bookings = await bookingModel.find({user: contextValue.userId});
-                const arr = bookings.map(booking => {
-                    return transformBooking(booking);
-                });
-                console.log(arr)
+                const arr = bookings.map(booking => {return transformBooking(booking);});
             return arr
             } catch (err) {
                 console.log(err)
@@ -25,9 +21,8 @@ export const bookingQueries = {
     }
 export const bookingMutations = {
         bookEvent: async (parent, args, contextValue, info) => {
-            console.log(args)
             if (!contextValue.isAuth) {
-                throw new Error('Unauthenticated');
+                throw authenticationError;
             }
             const fetchedEvent = await eventModel.findOne({_id: args.eventId});
             const booking = new bookingModel({
@@ -38,10 +33,8 @@ export const bookingMutations = {
             return transformBooking(result)
         },
         cancelBooking: async (parent, args, contextValue, info) => {
-            console.log("cancelbooking")
             if (!contextValue.isAuth) {
-                console.log("here")
-                throw new Error('Unauthenticated');
+                throw authenticationError
             }
             try {
                 const booking = await bookingModel.findById(args.bookingId).populate('event')
