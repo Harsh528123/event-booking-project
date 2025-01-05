@@ -4,7 +4,7 @@
 ## Description
 This project allows someone to sign up as a user and login as an authorized user who can create events, 
 view other people's events. An authorized user can also book events, view bookings and remove bookings.
-It is a very simple app that taught me GraphQL fairly well.
+It is a very simple app that taught me GraphQL fairly well. Since the focus was on learning GraphQL, the styling done is very basic.
 
 ## Tech Stack
 The tech stack used in this project was the MERN stack -> Mongo, Express, React and Node JS. For me, the
